@@ -1,0 +1,33 @@
+{
+  "name": "ptkdev_bot",
+  "version": "0.1.0",
+  "description": "Official PTKDev BOT.",
+  "main": "bot.js",
+  "scripts": {
+    "start": "forever -o ./logs/debug.log -e ./logs/errors.log --minUptime 1000 --spinSleepTime 1000 start bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ptkdev/ptkdev-telegram-bot.git"
+  },
+  "keywords": [
+    "bot",
+    "ptkdev",
+    "telegram"
+  ],
+  "author": "Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ptkdev/ptkdev-telegram-bot/issues"
+  },
+  "homepage": "https://github.com/ptkdev/ptkdev-telegram-bot/",
+  "dependencies": {
+    "forever": "^0.15.0",
+    "path": "^0.12.7",
+    "request": "^2.80.0",
+    "telegraf": "^3.14.1"
+  },
+  "engines": {
+    "node": ">=8.1.3"
+  }
+}
