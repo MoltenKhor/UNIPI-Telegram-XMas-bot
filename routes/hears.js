@@ -5,8 +5,8 @@
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
+ * @link:       http://telegraf.js.org/#/?id=hears
  * @version:    0.1
- * @link:       https://github.com/telegraf/telegraf
  * @changelog:  0.1 initial release
  *
  */
