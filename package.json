@@ -1,14 +1,15 @@
 {
   "name": "ptkdev_bot",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Official PTKDev BOT.",
   "main": "bot.js",
   "scripts": {
-    "start": "forever -o ./logs/debug.log -e ./logs/errors.log --minUptime 1000 --spinSleepTime 1000 start bot.js"
+    "start": "forever -o ./logs/debug.log -e ./logs/errors.log --minUptime 1000 --spinSleepTime 1000 start bot.js",
+    "stop": "forever stop bot.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ptkdev/ptkdev-telegram-bot.git"
+    "url": "https://github.com/ptkdev/ptkdev-telegram-bot.git"
   },
   "keywords": [
     "bot",
@@ -20,12 +21,14 @@
   "bugs": {
     "url": "https://github.com/ptkdev/ptkdev-telegram-bot/issues"
   },
-  "homepage": "https://github.com/ptkdev/ptkdev-telegram-bot/",
+  "homepage": "https://bot.ptkdev.io",
   "dependencies": {
     "forever": "^0.15.0",
     "path": "^0.12.7",
     "request": "^2.80.0",
-    "telegraf": "^3.14.1"
+    "telegraf": "^3.14.1",
+    "nodemailer": "^4.3.1",
+    "localtunnel": "^1.8.3"
   },
   "engines": {
     "node": ">=8.1.3"

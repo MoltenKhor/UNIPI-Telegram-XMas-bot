@@ -1,8 +1,11 @@
 "use strict";
 module.exports = {
     // Node Config
-    "debug": true,
-    "port": 3000,
+    "debug": false,
+    "webhook": false,
+    "webhook_port": 3000,
+    "webhook_host": "https://XXXXXXXXX.localtunnel.me",
+    "webhook_secretpath": "/secret-path",
 
     // Telegram API
     "bot_username": "ptkdev_bot",
@@ -15,10 +18,12 @@ module.exports = {
     "twitter_token": 'AbCdfGhIJKlmNoQQRsTUVwxyZ',
 
     // PTKDev API
-    "ptkdev_uri": 'api.ptkdev.io',
+    "ptkdev_api": 'api.ptkdev.io',
 
     //SMTP Server
     "smtp_user": 'bot@ptkdev.io',
     "smtp_pass": 'password',
-    "smtp_server": 'smtp.ptkdev.io'
+    "smtp_server": 'smtp.ptkdev.io',
+    "smtp_port": 587,
+    "smtp_ttls": false
 }

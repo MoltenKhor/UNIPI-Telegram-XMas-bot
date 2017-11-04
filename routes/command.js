@@ -14,7 +14,7 @@ module.exports = function(bot, config, request) {
     /**
      * Command: tweet
      * =====================
-     * Send random tweet from api.ptkdev.io/v1/tweet.json
+     * Send random tweet from api.ptkdev.io/v1/tweets.json
      *
      * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
      * @license:    This code and contributions have 'GNU General Public License v3'
@@ -24,11 +24,12 @@ module.exports = function(bot, config, request) {
      *
      */
     function tweet(ctx) {
-        request('http://api.ptkdev.io/v1/tweets.json', function(error, response, json) {
+        request('https://'+config.ptkdev_api+'/v1/tweets.json', function(error, response, json) {
             if (error)
                 return error;
-            obj = JSON.parse(json);
-            tweet = obj.tweets[Math.floor(Math.random() * obj.tweets.length)];
+
+            let obj = JSON.parse(json);
+            let tweet = obj.tweets[Math.floor(Math.random() * obj.tweets.length)];
             ctx.reply(tweet);
         });
     }
@@ -47,12 +48,12 @@ module.exports = function(bot, config, request) {
      *
      */
     function murales(ctx) {
-        request('http://api.ptkdev.io/v1/murales.json', function(error, response, json) {
+        request('https://'+config.ptkdev_api+'/v1/murales.json', function(error, response, json) {
             if (error)
                 return error;
 
-            obj = JSON.parse(json);
-            murales_url = obj.murales[Math.floor(Math.random() * obj.murales.length)];
+            let obj = JSON.parse(json);
+            let murales_url = obj.murales[Math.floor(Math.random() * obj.murales.length)];
             ctx.reply(murales_url);
         });
     }
@@ -72,7 +73,7 @@ module.exports = function(bot, config, request) {
      *
      */
     function insulta(ctx) {
-        var insulta = [
+        let insulta = [
             "@fgaudo sei un coglione...",
             "@Fearuin sei una merda."
         ];
@@ -93,7 +94,35 @@ module.exports = function(bot, config, request) {
      *
      */
     function email(ctx) {
-        ctx.reply("Email inviata");
+    	const nodemailer = require('nodemailer');
+    	let email_from = '';
+    	let email_text = '';
+    	let smtp_config = {
+		    host: config.smtp_server,
+		    port: config.smtp_port,
+		    secure: config.smtp_ttls,
+		    auth: {
+		        user: config.smtp_user,
+		        pass: config.smtp_pass
+		    }
+		};
+		let transporter = nodemailer.createTransport(smtp_config);
+
+		var mail_options = {
+		  from: email_from,
+		  to: config.smtp_user,
+		  subject: 'BOT: Email from '+email_from,
+		  text: email_text
+		};
+
+		transporter.sendMail(mail_options, function(error, info){
+		  if (error) {
+		  	ctx.reply("Error... "+error);
+		  } else {
+		  	ctx.reply("Email inviata :)");
+		  }
+		});
+        
     }
     bot.command('email', email);
 
@@ -128,4 +157,21 @@ module.exports = function(bot, config, request) {
         ctx.reply("/tweet - invia un tweet casuale di @ptkdev\n/murales - invia un murales fotografato da @ptkdev\n/social - lista dei social dove trovare @ptkdev\n/email - scrive un messaggio a info@ptkdev.it\n/help - lista comandi e suggerimenti\n\nParole chiave a cui risponde: roku, chi ci pensa, postazioni e altre ancora che devi scoprire :)");
     }
     bot.command('help', help);
+
+    /**
+     * Command: start
+     * =====================
+     * Send "Ciao!" and help message
+     *
+     * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
+     * @license:    This code and contributions have 'GNU General Public License v3'
+     * @version:    0.1
+     * @changelog:  0.1 initial release
+     *
+     */
+    function start(ctx) {
+    	ctx.reply('Ciao!');
+        help(ctx);
+    }
+    bot.command('start', start);
 };

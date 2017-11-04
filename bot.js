@@ -36,10 +36,10 @@
  * @changelog:  0.1 initial release
  *
  */
-var Telegraf = require('telegraf'),
-	config = require(__dirname + '/config'),
-	path = require('path'),
-	request = require('request');
+const Telegraf = require('telegraf');
+const config = require(__dirname + '/config');
+const path = require('path');
+const request = require('request');
 
 /**
  * Init
@@ -53,11 +53,12 @@ var Telegraf = require('telegraf'),
  * @changelog:  0.1 initial release
  *
  */
-var bot = new Telegraf(config.bot_token, {username: config.bot_username});
-bot.command('start', ({ from, reply }) => {
-  console.log('start', from);
-  return reply('Ciao!');
-});
+const bot = new Telegraf(config.bot_token, {username: config.bot_username});
+
+if(config.webhook){
+	// npm install -g localtunnel && lt --port 3000
+	bot.telegram.setWebhook(config.webhook_host+config.webhook_secretpath)
+}
 
 /**
  * Router
@@ -72,16 +73,21 @@ bot.command('start', ({ from, reply }) => {
  */
 require(__dirname + '/routes/hears')(bot, config, request);
 require(__dirname + '/routes/command')(bot, config, request);
+require(__dirname + '/routes/inline')(bot, config, request);
 
 /**
  * Polling
  * =====================
- * Telegraf Socket 
+ * Telegraf Socket.
+ * If in config.js you enabled webhook this polling is disabled.
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
+ * @link:       https://github.com/telegraf/telegraf/blob/develop/docs/examples/webhook-bot.js
  * @version:    0.1
  * @changelog:  0.1 initial release
  *
  */
-bot.startPolling();
+if(!config.webhook){
+	bot.startPolling();
+}
