@@ -11,7 +11,7 @@
 ## Setup
 You need [Node.js](https://nodejs.org/) (> 8.1) to run this bot.
 
-1. Create a bot via [@BotFather](https://t.me/BotFather) and grab a **token**.
+1. Create a bot via [@BotFather](https://t.me/BotFather) and grab a **token**. Plese do not create bot with name `@ptkdev_bot2` or similar. Use `@test1234` name for tests.
 2. Clone this repository (unstable) or [downlaod stable version](https://github.com/ptkdev/ptkdev-telegram-bot/releases).
 3. Install dependencies via `npm install`.
 4. Copy root file `config.js.tpl` to `config.js`, fill it properly.
