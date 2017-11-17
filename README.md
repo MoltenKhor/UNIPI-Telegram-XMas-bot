@@ -1,7 +1,7 @@
 # PTKDev Telegram Bot
 [![License](https://img.shields.io/badge/license-GLPv3-brightgreen.svg)]()
 [![powered by telegraf](https://img.shields.io/badge/powered%20by-telegraf-46aef7.svg)](https://github.com/telegraf/telegraf)
-[![Version](https://img.shields.io/badge/version-v0.2%20BETA-lightgrey.svg)]()
+[![Version](https://img.shields.io/badge/version-v0.2-lightgrey.svg)]()
 [![Use on Telegram](https://img.shields.io/badge/try%20bot%20on-Telegram-blue.svg)](https://bot.ptkdev.io)
 [![Slack Chat](https://img.shields.io/badge/chat%20on-Slack-orange.svg)](https://slack.ptkdev.io)
 [![Paypale Donate](https://img.shields.io/badge/donate-PayPal-red.svg)](https://paypal.me/ptkdev)
