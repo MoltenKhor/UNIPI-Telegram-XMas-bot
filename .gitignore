@@ -107,7 +107,7 @@ pids
 npm-debug.log
 /node_modules
 /bower_components
-*.package-lock.json
+package-lock.json
 
 # NodePress.js #
 ################
