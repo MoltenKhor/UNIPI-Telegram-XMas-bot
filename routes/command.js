@@ -24,7 +24,7 @@ module.exports = function(bot, config, request) {
      *
      */
     function tweet(ctx) {
-        request('https://'+config.ptkdev_api+'/v1/tweets.json', function(error, response, json) {
+        request('https://' + config.ptkdev_api + '/v1/tweets.json', function(error, response, json) {
             if (error)
                 return error;
 
@@ -48,7 +48,7 @@ module.exports = function(bot, config, request) {
      *
      */
     function murales(ctx) {
-        request('https://'+config.ptkdev_api+'/v1/murales.json', function(error, response, json) {
+        request('https://' + config.ptkdev_api + '/v1/murales.json', function(error, response, json) {
             if (error)
                 return error;
 
@@ -69,7 +69,7 @@ module.exports = function(bot, config, request) {
      * @version:    0.1
      * @changelog:  0.1 initial release
      * @todo:       - Add /insulta [@name]
-     * 				- Add /insulta [random]
+     *              - Add /insulta [random]
      *
      */
     function insulta(ctx) {
@@ -88,41 +88,58 @@ module.exports = function(bot, config, request) {
      *
      * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
      * @license:    This code and contributions have 'GNU General Public License v3'
-     * @version:    0.1
+     * @version:    0.2
      * @changelog:  0.1 initial release
+     *              0.2 work email
      * @todo:       Implement this command, at moment not work. Use smtp from config.js
      *
      */
     function email(ctx) {
-    	const nodemailer = require('nodemailer');
-    	let email_from = '';
-    	let email_text = '';
-    	let smtp_config = {
-		    host: config.smtp_server,
-		    port: config.smtp_port,
-		    secure: config.smtp_ttls,
-		    auth: {
-		        user: config.smtp_user,
-		        pass: config.smtp_pass
-		    }
-		};
-		let transporter = nodemailer.createTransport(smtp_config);
+        const nodemailer = require('nodemailer');
+        let email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        let email_array = [];
+        let email_from = '';
+        let email_text = ctx.update.message.text;
+        email_text = email_text.replace("/email ", "");
+        email_array = email_text.split("|");
+        if (typeof email_array[0] !== "undefined") {
+            email_from = (email_array[0]).trim();
+        }
+        if (typeof email_array[1] !== "undefined") {
+            email_text = (email_array[1]).trim();
+        }
+        if (!email_regex.test(email_from)) {
+            ctx.reply("Email not valid, example: /email your@email.com | text text text text text");
+        } else if (typeof email_array[1] === "undefined" || email_text.trim() == "") {
+            ctx.reply("Text is empty or not valid, example: /email your@email.com | text text text text text");
+        } else {
+            let smtp_config = {
+                host: config.smtp_server,
+                port: config.smtp_port,
+                secure: config.smtp_ttls,
+                auth: {
+                    user: config.smtp_user,
+                    pass: config.smtp_pass
+                }
+            };
+            let transporter = nodemailer.createTransport(smtp_config);
 
-		var mail_options = {
-		  from: email_from,
-		  to: config.smtp_user,
-		  subject: 'BOT: Email from '+email_from,
-		  text: email_text
-		};
+            var mail_options = {
+                from: email_from,
+                to: config.smtp_user,
+                subject: 'BOT: Email from ' + email_from,
+                text: email_text
+            };
 
-		transporter.sendMail(mail_options, function(error, info){
-		  if (error) {
-		  	ctx.reply("Error... "+error);
-		  } else {
-		  	ctx.reply("Email inviata :)");
-		  }
-		});
-        
+            transporter.sendMail(mail_options, function(error, info) {
+                if (error) {
+                    ctx.reply("Error... " + error);
+                    ctx.reply("Try correct request: /email your@email.com | text text text text text");
+                } else {
+                    ctx.reply("Email inviata :)");
+                }
+            });
+        }
     }
     bot.command('email', email);
 
@@ -154,7 +171,7 @@ module.exports = function(bot, config, request) {
      *
      */
     function help(ctx) {
-        ctx.reply("/tweet - invia un tweet casuale di @ptkdev\n/murales - invia un murales fotografato da @ptkdev\n/social - lista dei social dove trovare @ptkdev\n/email - scrive un messaggio a info@ptkdev.it\n/help - lista comandi e suggerimenti\n\nParole chiave a cui risponde: roku, chi ci pensa, postazioni e altre ancora che devi scoprire :)");
+        ctx.reply("/tweet - invia un tweet casuale di @ptkdev\n/murales - invia un murales fotografato da @ptkdev\n/social - lista dei social dove trovare @ptkdev\n/email - scrive un messaggio a support@ptkdev.io\n/help - lista comandi e suggerimenti\n\nParole chiave a cui risponde: roku, chi ci pensa, postazioni e altre ancora che devi scoprire :)\n\nVersion: 0.2");
     }
     bot.command('help', help);
 
@@ -170,7 +187,7 @@ module.exports = function(bot, config, request) {
      *
      */
     function start(ctx) {
-    	ctx.reply('Ciao!');
+        ctx.reply('Ciao!');
         help(ctx);
     }
     bot.command('start', start);

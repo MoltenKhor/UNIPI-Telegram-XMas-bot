@@ -4,8 +4,8 @@
   "description": "Official PTKDev BOT.",
   "main": "bot.js",
   "scripts": {
-    "start": "forever -o ./logs/debug.log -e ./logs/errors.log --minUptime 1000 --spinSleepTime 1000 start bot.js",
-    "stop": "forever stop bot.js"
+    "start": "pm2 -o ./logs/debug.log -e ./logs/errors.log start bot.js",
+    "stop": "pm2 stop bot.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
   "homepage": "https://bot.ptkdev.io",
   "dependencies": {
     "forever": "^0.15.0",
+    "pm2": "^2.7.2",
     "path": "^0.12.7",
     "request": "^2.80.0",
     "telegraf": "^3.14.1",
