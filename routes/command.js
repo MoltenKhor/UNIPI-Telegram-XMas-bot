@@ -109,9 +109,9 @@ module.exports = function(bot, config, request) {
             email_text = (email_array[1]).trim();
         }
         if (!email_regex.test(email_from)) {
-            ctx.reply("Email not valid, example: /email your@email.com | text text text text text");
+            ctx.reply("Email non valida, esempio:\n/email your@email.com | text text text text text");
         } else if (typeof email_array[1] === "undefined" || email_text.trim() == "") {
-            ctx.reply("Text is empty or not valid, example: /email your@email.com | text text text text text");
+            ctx.reply("Inserisci un testo valido, esempio:\n/email your@email.com | text text text text text");
         } else {
             let smtp_config = {
                 host: config.smtp_server,
@@ -133,8 +133,8 @@ module.exports = function(bot, config, request) {
 
             transporter.sendMail(mail_options, function(error, info) {
                 if (error) {
-                    ctx.reply("Error... " + error);
-                    ctx.reply("Try correct request: /email your@email.com | text text text text text");
+                    ctx.reply("Errore... " + error);
+                    ctx.reply("Riprova usando il formato:\n/email your@email.com | text text text text text");
                 } else {
                     ctx.reply("Email inviata :)");
                 }
