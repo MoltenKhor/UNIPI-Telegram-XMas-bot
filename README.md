@@ -28,6 +28,9 @@ Command                 | Role       | Available at | Description
 `<text>`                | _Everyone_ | _Groups_     | Response at random word: roku, chi lo fa, etc...
 `/help` \| `/start`     | _Everyone_ | _In-Bot_     | How to use the bot.
 
+# Available on other platform
+This version of bot is available on [Skype](https://github.com/ptkdev/ptkdev-skype-bot) and [Facebook Messenger](https://github.com/ptkdev/ptkdev-facebook-messenger-bot)
+
 # License
 
 GNU GENERAL PUBLIC LICENSE
