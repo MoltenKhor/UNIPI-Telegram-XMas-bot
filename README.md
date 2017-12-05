@@ -6,7 +6,7 @@
 
 [![Paypale Donate](https://img.shields.io/badge/donate-PayPal-red.svg)](https://paypal.me/Kh0r)
 
-[![https://bot.ptkdev.io](https://imgur.com/a/kAx3E)](https://bot.ptkdev.io)
+[![https://bot.ptkdev.io](https://i.imgur.com/6VuOvDx.png)](https://t.me/SantaGauss_bot)
 
 ## Setup
 You need [Node.js](https://nodejs.org/) (> 8.1) to run this bot.
