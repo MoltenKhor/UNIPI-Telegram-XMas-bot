@@ -4,87 +4,24 @@
  * Write / and see commands of bot
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
+ *
  * @license:    This code and contributions have 'GNU General Public License v3'
  * @link:       http://telegraf.js.org/#/?id=command
  * @version:    0.1
  * @changelog:  0.1 initial release
  *
  */
+
+ //insert above some key words that triggers the funny answer fro Gauss
+var impossibilita = ["18", "30", "lode", "fisica", "analisi", "laurearmi", "laurea", "esame", "esami", "appello", "appelli", "sessione", "cfu", "dottorato"];
+
 module.exports = function(bot, config, request) {
-    /**
-     * Command: tweet
-     * =====================
-     * Send random tweet from api.ptkdev.io/v1/tweets.json
-     *
-     * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
-     * @license:    This code and contributions have 'GNU General Public License v3'
-     * @version:    0.1
-     * @changelog:  0.1 initial release
-     * @todo:       - Add errors manager
-     *
-     */
-    function tweet(ctx) {
-        request('https://' + config.ptkdev_api + '/v1/tweets.json', function(error, response, json) {
-            if (error)
-                return error;
 
-            let obj = JSON.parse(json);
-            let tweet = obj.tweets[Math.floor(Math.random() * obj.tweets.length)];
-            ctx.reply(tweet);
-        });
-    }
-    bot.command('tweet', tweet);
-
-    /**
-     * Command: murales
-     * =====================
-     * Send random murales from api.ptkdev.io/v1/murales.json
-     *
-     * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
-     * @license:    This code and contributions have 'GNU General Public License v3'
-     * @version:    0.1
-     * @changelog:  0.1 initial release
-     * @todo:       - Add errors manager
-     *
-     */
-    function murales(ctx) {
-        request('https://' + config.ptkdev_api + '/v1/murales.json', function(error, response, json) {
-            if (error)
-                return error;
-
-            let obj = JSON.parse(json);
-            let murales_url = obj.murales[Math.floor(Math.random() * obj.murales.length)];
-            ctx.reply(murales_url);
-        });
-    }
-    bot.command('murales', murales);
-
-    /**
-     * Command: insulta
-     * =====================
-     * Send random insult to my friends
-     *
-     * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
-     * @license:    This code and contributions have 'GNU General Public License v3'
-     * @version:    0.1
-     * @changelog:  0.1 initial release
-     * @todo:       - Add /insulta [@name]
-     *              - Add /insulta [random]
-     *
-     */
-    function insulta(ctx) {
-        let insulta = [
-            "@fgaudo sei un coglione...",
-            "@Fearuin sei una merda."
-        ];
-        ctx.reply(insulta[Math.floor(Math.random() * insulta.length)]);
-    }
-    bot.command('insulta', insulta);
 
     /**
      * Command: email
      * =====================
-     * Send random insult to my friends. Example: /email hi patryk
+     *
      *
      * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
      * @license:    This code and contributions have 'GNU General Public License v3'
@@ -94,24 +31,15 @@ module.exports = function(bot, config, request) {
      * @todo:       Implement this command, at moment not work. Use smtp from config.js
      *
      */
-    function email(ctx) {
+    function lettera(ctx) {
         const nodemailer = require('nodemailer');
         let email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
         let email_array = [];
-        let email_from = '';
+        let email_from = 'babbo.unipi@gmail.com';  //this is an inizialized email so that the use won't need to use his personal information to send messages
         let email_text = ctx.update.message.text;
         email_text = email_text.replace("/email ", "");
-        email_array = email_text.split("|");
-        if (typeof email_array[0] !== "undefined") {
-            email_from = (email_array[0]).trim();
-        }
-        if (typeof email_array[1] !== "undefined") {
-            email_text = (email_array[1]).trim();
-        }
-        if (!email_regex.test(email_from)) {
-            ctx.reply("Email non valida, esempio:\n/email your@email.com | text text text text text");
-        } else if (typeof email_array[1] === "undefined" || email_text.trim() == "") {
-            ctx.reply("Inserisci un testo valido, esempio:\n/email your@email.com | text text text text text");
+        if (typeof email_text === "undefined" || email_text.trim() == "") {
+            ctx.reply("Inserisci un testo valido, esempio:\n/email text text text text text");
         } else {
             let smtp_config = {
                 host: config.smtp_server,
@@ -134,14 +62,27 @@ module.exports = function(bot, config, request) {
             transporter.sendMail(mail_options, function(error, info) {
                 if (error) {
                     ctx.reply("Errore... " + error);
-                    ctx.reply("Riprova usando il formato:\n/email your@email.com | text text text text text");
+                    ctx.reply("Riprova usando il formato:\n/email text text text text text");
                 } else {
-                    ctx.reply("Email inviata :)");
+                  if(impossibilita.some(el => email_text.includes(el))){
+
+                    var rand = Math.floor(Math.random()*5);
+                    var random_answer = "";
+                    switch(rand){
+                      case 0: random_answer = "No senti eh... porto regali, mica faccio miracoli!"; break;
+                      case 1: random_answer = "Eeh ora chiedi troppo..."; break;
+                      case 2: random_answer = "Non credo di essere la persona giusta a cui chiederlo..."; break;
+                      case 4: random_answer = "Si certo... aspetta che prendo la bacchetta magica..."; break;
+                      default: random_answer = "Cavolo vedo che non scherzi con le richieste!";
+                    }
+                    ctx.reply(random_answer + "Dai, non fare quella faccia... Sto mandandi i miei elfi a cercare una soluzione :)")
+                  }
+                  else ctx.reply("Lettera imbucata! I miei elfi sono già a lavoro per te.");
                 }
             });
         }
     }
-    bot.command('email', email);
+    bot.command('lettera', lettera);
 
     /**
      * Command: social
@@ -155,14 +96,14 @@ module.exports = function(bot, config, request) {
      *
      */
     function social(ctx) {
-        ctx.reply("Facebook: https://fb.me/ptkdev\nTwitter: https://twitter.com/ptkdev\nInstagram: https://instagram.com/ptkdev");
+        ctx.reply("Facebook Sinistr Per...: https://www.facebook.com/sinistraper\nFacebook Ingegneria in Movimento: https://www.facebook.com/IngegneriaInMovimentoSinistraPer\nSito Web: http://www.sinistraper.org");
     }
     bot.command('social', social);
 
     /**
-     * Command: help
+     * Command: info
      * =====================
-     * Send list of bot commands
+     * Send information about the game and rules
      *
      * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
      * @license:    This code and contributions have 'GNU General Public License v3'
@@ -170,10 +111,16 @@ module.exports = function(bot, config, request) {
      * @changelog:  0.1 initial release
      *
      */
-    function help(ctx) {
-        ctx.reply("/tweet - invia un tweet casuale di @ptkdev\n/murales - invia un murales fotografato da @ptkdev\n/social - lista dei social dove trovare @ptkdev\n/email - scrive un messaggio a support@ptkdev.io\n/help - lista comandi e suggerimenti\n\nParole chiave a cui risponde: roku, chi ci pensa, postazioni e altre ancora che devi scoprire :)\n\nVersion: 0.2");
+    function info(ctx) {
+        ctx.reply("Questo bot è stato creato dalla rappresentanza studentesca \"Ingegneria in Movimento\". Ha lo copo di raccogliere pareri e idee o problematiche riscontrate in università, ma anche diffondere pensieri o racconti tra noi studenti. \nLe lettere sono in forma anonima e nessuna delle vostre informazioni personali saranno pubblicate, i vostri dati sono al sicuro!\nGiocate in modo corretto, moderate i termini... ma soprattutto buon divertimento!");
+        ctx.reply("usa il comando /social per consultare i nostri social network.");
     }
-    bot.command('help', help);
+    bot.command('info', info);
+
+    function support(ctx){
+      ctx.reply("Hai riscontrato bug, difetti, incorrettezze o semplicemente vuoi dirmi la tua? contattami via mail all\'indirizzo marco.pontone@gmail.com\nCore credits: @ptkdev");
+    }
+    bot.command('support', support);
 
     /**
      * Command: start
@@ -187,8 +134,13 @@ module.exports = function(bot, config, request) {
      *
      */
     function start(ctx) {
-        ctx.reply('Ciao!');
+        ctx.reply('Benvenuto nel Bot di Santa Gauss!\nQuest\'anno affdati a me per ricevere una gioia, inviami una lettera di natale con il comando /lettera e accanto il messaggio e farò il possibile per realizzare il tuo desiderio.\nAule sistemate, nuovi spazi per studiare o qualsiasi cosa tu voglia nell\'Università di Pisa. Raccontaci la tua?\n\nLe lettere più carine e divertenti verranno pubblicate e appese su un albero di natale in Università!');
         help(ctx);
     }
     bot.command('start', start);
+
+    function help(ctx){
+      ctx.reply("/lettera messaggio - Per inviarmi una Letterina;\n/social - Per consultare i social di rappresentanza;\n/info - Per consultare il regolamento del gioco;\n/suppoert - Se vuoi contattare lo sviluppatore;")
+    }
+    bot.command("help", help);
 };
